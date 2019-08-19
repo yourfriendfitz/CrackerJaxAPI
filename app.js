@@ -40,13 +40,25 @@ app.post("/vendor", async (req, res, next) => {
 });
 
 app.post("/order", async (req, res, next) => {
+  const products = req.body.productIds;
   const uid = req.body.uid;
   const order = models.Order.build({
     uid
   });
   try {
+    const responseArray = [];
     const response = await order.save();
-    res.json(response);
+    const orderId = response.id;
+    products.forEach(async product => {
+      const productId = parseInt(product);
+      const orderItem = models.OrderItem.build({
+        orderId,
+        productId
+      });
+      const response = await orderItem.save();
+      responseArray.push(response);
+    });
+    res.json(responseArray);
   } catch (error) {
     res.json(error);
   }
