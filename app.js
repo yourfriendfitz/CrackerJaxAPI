@@ -62,7 +62,7 @@ app.post("/product", async (req, res, next) => {
   }
 });
 
-// API ROUTES -------------------------------------------- 
+// API ROUTES --------------------------------------------
 
 app.get("/api/products", async (req, res) => {
   const products = await models.Product.findAll();
@@ -89,7 +89,7 @@ app.get("/api/users/:id", async (req, res) => {
   res.json(user);
 });
 
-app.get("/api/product/:id", async (req, res) => {
+app.get("/api/products/:id", async (req, res) => {
   const id = req.params.id;
   const product = await models.Product.findOne({
     where: {
@@ -99,9 +99,19 @@ app.get("/api/product/:id", async (req, res) => {
   res.json(product);
 });
 
-app.get("/api/vendor/:id", async (req, res) => {
+app.get("/api/products/type/:type", async (req, res) => {
+  const type = req.params.type;
+  const product = await models.Product.findAll({
+    where: {
+      type
+    }
+  });
+  res.json(product);
+});
+
+app.get("/api/vendors/:id", async (req, res) => {
   const id = req.params.id;
-  const vendor = await models.Product.findOne({
+  const vendor = await models.Vendor.findOne({
     where: {
       id
     }
