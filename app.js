@@ -41,7 +41,7 @@ app.post("/vendor", async (req, res, next) => {
 
 app.post("/order", async (req, res, next) => {
   const uid = req.body.uid;
-  const order = models.Vendor.build({
+  const order = models.Order.build({
     uid
   });
   try {
