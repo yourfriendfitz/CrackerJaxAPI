@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "sdkbkaqv",
+    "password": "G6KeDpWWa77SDO_GxrZ8hdaVr11hEs2F",
+    "database": "sdkbkaqv",
+    "host": "hanno.db.elephantsql.com",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "sdkbkaqv",
+    "password": "G6KeDpWWa77SDO_GxrZ8hdaVr11hEs2F",
+    "database": "sdkbkaqv",
+    "host": "hanno.db.elephantsql.com",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "sdkbkaqv",
+    "password": "G6KeDpWWa77SDO_GxrZ8hdaVr11hEs2F",
+    "database": "sdkbkaqv",
+    "host": "hanno.db.elephantsql.com",
+    "dialect": "postgres"
+  }
+}

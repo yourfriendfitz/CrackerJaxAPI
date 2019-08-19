@@ -1,0 +1,16 @@
+{
+  "name": "CrackerJaxAPI",
+  "version": "1.0.0",
+  "description": "An API for CrackerJax",
+  "main": "index.js",
+  "repository": "https://github.com/yourfriendfitz/CrackerJaxAPI.git",
+  "author": "Joshua Fitzgerald <fitzgerald913@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "express": "^4.17.1",
+    "pg": "^7.12.1",
+    "sequelize": "^5.15.1"
+  }
+}
