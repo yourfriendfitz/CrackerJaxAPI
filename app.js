@@ -39,6 +39,19 @@ app.post("/vendor", async (req, res, next) => {
   }
 });
 
+app.post("/order", async (req, res, next) => {
+  const uid = req.body.uid;
+  const order = models.Vendor.build({
+    uid
+  });
+  try {
+    const response = await order.save();
+    res.json(response);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 app.post("/product", async (req, res, next) => {
   const name = req.body.name;
   const price = parseInt(req.body.price);
