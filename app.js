@@ -1,11 +1,15 @@
 const express = require("express");
 const path = require("path");
 const models = require("./models");
+const cors = require("cors");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+//  TOOLS TO ADD DATA --------------------------------
 
 app.post("/user", async (req, res, next) => {
   const username = req.body.name;
@@ -56,6 +60,53 @@ app.post("/product", async (req, res, next) => {
   } catch (error) {
     res.json(error);
   }
+});
+
+// API ROUTES -------------------------------------------- 
+
+app.get("/api/products", async (req, res) => {
+  const products = await models.Product.findAll();
+  res.json(products);
+});
+
+app.get("/api/users", async (req, res) => {
+  const users = await models.User.findAll();
+  res.json(users);
+});
+
+app.get("/api/vendors", async (req, res) => {
+  const vendors = await models.Vendor.findAll();
+  res.json(vendors);
+});
+
+app.get("/api/users/:id", async (req, res) => {
+  const id = req.params.id;
+  const user = await models.User.findOne({
+    where: {
+      id
+    }
+  });
+  res.json(user);
+});
+
+app.get("/api/product/:id", async (req, res) => {
+  const id = req.params.id;
+  const product = await models.Product.findOne({
+    where: {
+      id
+    }
+  });
+  res.json(product);
+});
+
+app.get("/api/vendor/:id", async (req, res) => {
+  const id = req.params.id;
+  const vendor = await models.Product.findOne({
+    where: {
+      id
+    }
+  });
+  res.json(vendor);
 });
 
 // catch 404 and forward to error handler

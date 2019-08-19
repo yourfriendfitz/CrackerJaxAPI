@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     OrderItem.hasOne(models.Product, {
       as: "product",
-      foreignKey: "productId"
+      foreignKey: "id"
     });
   };
   return OrderItem;
