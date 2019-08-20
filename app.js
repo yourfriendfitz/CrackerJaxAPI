@@ -40,22 +40,27 @@ app.post("/vendor", async (req, res, next) => {
 });
 
 app.post("/order", async (req, res, next) => {
-  const products = req.body.productIds;
+  const products = JSON.parse(`[${req.body.productIds}]`);
   const uid = req.body.uid;
+  const ready = false;
+  const paid = true;
   const order = models.Order.build({
-    uid
+    uid,
+    ready,
+    paid
   });
   try {
     const responseArray = [];
     const response = await order.save();
     const orderId = response.id;
-    products.forEach(async product => {
+
+    products.forEach(product => {
       const productId = parseInt(product);
       const orderItem = models.OrderItem.build({
         orderId,
         productId
       });
-      const response = await orderItem.save();
+      const response = orderItem.save();
       responseArray.push(response);
     });
     res.json(responseArray);
@@ -88,6 +93,25 @@ app.post("/product", async (req, res, next) => {
 });
 
 // API ROUTES --------------------------------------------
+
+app.get("/api/orders", async (req, res) => {
+  const orders = await models.OrderItem.findAll();
+  res.json(orders);
+});
+
+app.get("/api/orders/:id", async (req, res) => {
+  const products = await models.Product.findAll({
+    where: {
+      id: await models.OrderItem.findAll({
+        attributes: ["productId"],
+        where: {
+          orderId: req.params.id
+        }
+      }).map(obj => obj.dataValues.productId)
+    }
+  });
+  res.json(products);
+});
 
 app.get("/api/products", async (req, res) => {
   const products = await models.Product.findAll();
