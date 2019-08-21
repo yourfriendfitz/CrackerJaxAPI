@@ -13,10 +13,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.post("/user", async (req, res, next) => {
   const username = req.body.name;
-  const password = req.body.password;
   const user = models.User.build({
-    username: username,
-    password: password
+    username
   });
   try {
     const response = await user.save();
