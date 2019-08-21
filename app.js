@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 //  TOOLS TO ADD DATA --------------------------------
 
 app.post("/user", async (req, res, next) => {
-  const username = req.body.name;
+  const username = req.body.username;
   const user = models.User.build({
     username
   });
