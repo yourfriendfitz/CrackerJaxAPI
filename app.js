@@ -118,6 +118,15 @@ app.get("/api/products", async (req, res) => {
   res.json(products);
 });
 
+app.get("/api/products/:vendorId", async (req, res) => {
+  const products = await models.Product.findAll({
+    where: {
+      vendorId: req.params.vendorId
+    }
+  });
+  res.json(products);
+});
+
 app.get("/api/users", async (req, res) => {
   const users = await models.User.findAll();
   res.json(users);
