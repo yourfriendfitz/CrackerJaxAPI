@@ -38,7 +38,7 @@ app.post("/vendor", async (req, res, next) => {
 });
 
 app.post("/order", async (req, res, next) => {
-  const products = JSON.parse(`[${req.body.productIds}]`);
+  const products = req.body.productIds;
   const uid = req.body.uid;
   const ready = false;
   const paid = true;
@@ -108,7 +108,15 @@ app.get("/api/orders/:id", async (req, res) => {
       }).map(obj => obj.dataValues.productId)
     }
   });
-  res.json(products);
+  const order = await models.Order.findOne({
+    where: {
+      id: req.params.id
+    }
+  });
+  res.json({
+    order,
+    products
+  });
 });
 
 app.get("/api/products", async (req, res) => {
