@@ -209,6 +209,42 @@ app.get("/api/vendors/:id", async (req, res) => {
   res.json(vendor);
 });
 
+app.get("/api/vendors/:id/orders", async (req, res) => {
+  const vendorId = req.params.id;
+  const orderIds = await models.OrderItem.findAll({
+    where: {
+      productId: await models.Product.findAll({
+        where: {
+          vendorId
+        }
+      }).map(obj => obj.dataValues.id)
+    }
+  }).map(obj => obj.dataValues.orderId);
+  const orders = await models.Order.findAll({
+    include: [
+      {
+        model: models.OrderItem,
+        as: "items"
+      }
+    ],
+    where: {
+      id: orderIds
+    }
+  });
+  for (const order of orders) {
+    const orderItems = order.items;
+    for (const item of orderItems) {
+      const id = item.dataValues.productId;
+      item.dataValues.product = await models.Product.findOne({
+        where: {
+          id
+        }
+      });
+    }
+  }
+  res.json(orders);
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
