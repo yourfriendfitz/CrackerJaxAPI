@@ -26,8 +26,10 @@ app.post("/user", async (req, res, next) => {
 
 app.post("/vendor", async (req, res, next) => {
   const name = req.body.name;
+  const imageUrl = req.body.imageUrl;
   const vendor = models.Vendor.build({
-    name
+    name,
+    imageUrl
   });
   try {
     const response = await vendor.save();
