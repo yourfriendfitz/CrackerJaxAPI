@@ -143,6 +143,32 @@ app.get("/api/vendors", async (req, res) => {
   res.json(vendors);
 });
 
+app.get("/api/users/:id/orders", async (req, res) => {
+  const orders = await models.Order.findAll({
+    include: [
+      {
+        model: models.OrderItem,
+        as: "items"
+      }
+    ],
+    where: {
+      uid: req.params.id
+    }
+  });
+  for (const order of orders) {
+    const orderItems = order.items;
+    for (const item of orderItems) {
+      const id = item.dataValues.productId;
+      item.dataValues.product = await models.Product.findOne({
+        where: {
+          id
+        }
+      });
+    }
+  }
+  res.json(orders);
+});
+
 app.get("/api/users/:id", async (req, res) => {
   const id = req.params.id;
   const user = await models.User.findOne({
