@@ -69,6 +69,43 @@ app.post("/order", async (req, res, next) => {
   }
 });
 
+app.post("/orderByEmail", async (req, res, next) => {
+  const username = req.params.email;
+  const uidObj = await models.User.findOne({
+    attributes: ["id"],
+    where: {
+      username
+    }
+  });
+  const uid = uidObj.dataValues.id;
+  const products = req.body.productIds;
+  const ready = false;
+  const paid = true;
+  const order = models.Order.build({
+    uid,
+    ready,
+    paid
+  });
+  try {
+    const responseArray = [];
+    const response = await order.save();
+    const orderId = response.id;
+
+    products.forEach(product => {
+      const productId = parseInt(product);
+      const orderItem = models.OrderItem.build({
+        orderId,
+        productId
+      });
+      const response = orderItem.save();
+      responseArray.push(response);
+    });
+    res.json(responseArray);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 app.post("/product", async (req, res, next) => {
   const name = req.body.name;
   const price = parseInt(req.body.price);
