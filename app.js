@@ -171,6 +171,40 @@ app.get("/api/users/:id/orders", async (req, res) => {
   res.json(orders);
 });
 
+app.get("/api/:email/orders", async (req, res) => {
+  const username = req.params.email;
+  const uidObj = await models.User.findOne({
+    attributes: ["id"],
+    where: {
+      username
+    }
+  });
+  const uid = uidObj.dataValues.id;
+  const orders = await models.Order.findAll({
+    include: [
+      {
+        model: models.OrderItem,
+        as: "items"
+      }
+    ],
+    where: {
+      uid
+    }
+  });
+  for (const order of orders) {
+    const orderItems = order.items;
+    for (const item of orderItems) {
+      const id = item.dataValues.productId;
+      item.dataValues.product = await models.Product.findOne({
+        where: {
+          id
+        }
+      });
+    }
+  }
+  res.json(orders);
+});
+
 app.get("/api/users/:id", async (req, res) => {
   const id = req.params.id;
   const user = await models.User.findOne({
